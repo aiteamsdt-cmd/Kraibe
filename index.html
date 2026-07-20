@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kraibe — Seguridad Inteligente, Conserjería Remota & Redes Corporativas</title>
+    
+    <!-- Google Fonts: Inter (Formal Body) & Montserrat (High-Tech Sans-Serif Headings) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#0A1A2E', // Deep Navy Blue
+                            light: '#152C46',
+                            muted: '#203A58',
+                            lightBg: '#0D2035'
+                        },
+                        electric: '#1565FF', // Electric Blue
+                        celeste: '#00C2FF', // Digital Celeste
+                        turquoise: '#00D1B2', // Tech Turquoise
+                        darkText: '#0F172A', // Slate 900 for absolute contrast
+                        bodyText: '#334155', // Slate 700 for legible body copy
+                        mutedText: '#475569' // Slate 600 for supporting labels
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A; /* Default dark text on light background */
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Immersive background configuration using user's custom image with NO filter overlay */
+        .tech-bg {
+            background-image: url('https://res.cloudinary.com/dway4iqeh/image/upload/v1784474242/WhatsApp_Image_2026-07-19_at_11.12.09_clcgfq.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        /* Sleek connection lines running horizontally and vertically */
+        .tech-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #1565FF, #00D1B2, transparent);
+            height: 3px;
+            opacity: 0.6;
+        }
+
+        .tech-line-vert {
+            position: absolute;
+            background: linear-gradient(180deg, transparent, #1565FF, #00C2FF, transparent);
+            width: 3px;
+            opacity: 0.5;
+        }
+
+        /* Custom Clip path for Hexagons matching the image_4e56e3.png design aesthetics */
+        .hexagon-clip {
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            transition: all 0.3s ease;
+        }
+
+        .hexagon-clip:hover {
+            transform: scale(1.04);
+        }
+
+        .hexagon-border {
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            background: linear-gradient(135deg, #1565FF 0%, #00C2FF 50%, #00D1B2 100%);
+            padding: 4px;
+        }
+
+        .hexagon-inner {
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            background-color: #0A1A2E;
+        }
+
+        /* Gradient text shortcuts */
+        .gradient-text {
+            background: linear-gradient(135deg, #1565FF 0%, #00C2FF 50%, #00D1B2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Active Navigation indicator (Adapted for Dark Navy Header) */
+        .active-nav-link {
+            border-bottom: 4px solid #00C2FF;
+            color: #00C2FF !important;
+            font-weight: 800;
+        }
+
+        /* Active Mobile Tab indicator */
+        .active-tab-link-mobile {
+            color: #00C2FF !important;
+            transform: translateY(-2px);
+        }
+
+        /* High contrast corporate card shadow */
+        .tech-shadow {
+            box-shadow: 0 20px 40px -15px rgba(10, 26, 46, 0.12), 0 0 0 1px rgba(10, 26, 46, 0.04);
+        }
+
+        .glow-accent {
+            filter: drop-shadow(0 0 15px rgba(21, 101, 255, 0.6));
+        }
+
+        /* Scanning effect simulation for SOC display */
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+        .scanning::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to bottom, transparent, #00D1B2, transparent);
+            top: 0;
+            left: 0;
+            animation: scan 4s linear infinite;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="tech-bg min-h-screen flex flex-col selection:bg-celeste selection:text-navy text-base">
+
+    <!-- Brand Sticky Top Header - Re-proportioned for balanced view and less zoom -->
+    <header class="sticky top-0 z-50 bg-gradient-to-r from-navy/95 via-navy-light/95 to-navy/95 backdrop-blur-md border-b border-navy-muted/60 transition-all duration-300 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header layout dynamically adapts: Compact on mobile for app layout perspective, standard on desktop -->
+            <div class="flex items-center justify-between h-20 sm:h-28 lg:h-36">
+                
+                <!-- Logo brand integration: Proportional container layout -->
+                <div class="flex-shrink-0 flex items-center h-full py-2 lg:py-4 mx-auto lg:mx-0">
+                    <a href="#inicio" onclick="navigateTo('inicio')" class="flex items-center gap-4 group">
+                        <!-- Logo size scaled down dynamically on mobile to feel like a native top app bar, and bold on desktop -->
+                        <img 
+                            src="https://res.cloudinary.com/dway4iqeh/image/upload/v1784412339/WhatsApp_Image_2026-07-18_at_17.20.29-removebg-preview_d8wque.png" 
+                            alt="Kraibe Soluciones Logo" 
+                            class="h-16 sm:h-24 lg:h-32 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                            onerror="this.src='https://placehold.co/360x120/0a1a2e/ffffff?text=KRAIBE+SOLUCIONES'"
+                        />
+                    </a>
+                </div>
+
+                <!-- Modern desktop clean text-based navigation -->
+                <nav class="hidden lg:flex space-x-8">
+                    <button onclick="navigateTo('inicio')" id="nav-inicio" class="text-sm font-extrabold tracking-wider text-white/90 hover:text-celeste py-3 px-2 transition-all active-nav-link">
+                        INICIO
+                    </button>
+                    <button onclick="navigateTo('servicios')" id="nav-servicios" class="text-sm font-extrabold tracking-wider text-white/90 hover:text-celeste py-3 px-2 transition-all">
+                        SERVICIOS
+                    </button>
+                    <button onclick="navigateTo('tecnologia')" id="nav-tecnologia" class="text-sm font-extrabold tracking-wider text-white/90 hover:text-celeste py-3 px-2 transition-all">
+                        INFRAESTRUCTURA
+                    </button>
+                    <button onclick="navigateTo('nosotros')" id="nav-nosotros" class="text-sm font-extrabold tracking-wider text-white/90 hover:text-celeste py-3 px-2 transition-all">
+                        NOSOTROS
+                    </button>
+                </nav>
+
+                <!-- High Tech CTA & Connectivity Status Indicator -->
+                <div class="hidden lg:flex items-center gap-5">
+                    <div class="flex items-center gap-2.5 bg-white/10 border border-white/20 py-2 px-4 rounded-full text-[11px] font-bold text-white tracking-wide">
+                        <span class="h-2.5 w-2.5 rounded-full bg-turquoise animate-pulse"></span>
+                        CENTRAL CONCEPCIÓN ACTIVA
+                    </div>
+                    <button onclick="navigateTo('contacto')" class="bg-gradient-to-r from-electric to-celeste text-white hover:from-celeste hover:to-turquoise transition-all duration-300 font-extrabold text-xs uppercase py-3.5 px-7 rounded-xl tracking-wider shadow-md shadow-electric/20">
+                        COTIZAR PROYECTO
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Native Bottom Tab Bar - Pinned bottom system for authentic application navigation structure -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-navy/95 border-t border-navy-muted/60 backdrop-blur-md lg:hidden px-4 py-3 flex justify-around items-center shadow-2xl">
+        <button onclick="navigateTo('inicio')" id="tab-inicio" class="flex flex-col items-center justify-center text-white/70 hover:text-celeste transition-all active-tab-link-mobile">
+            <i data-lucide="home" class="h-6 w-6"></i>
+            <span class="text-[10px] font-extrabold mt-1.5 uppercase tracking-tight font-tech">Inicio</span>
+        </button>
+        <button onclick="navigateTo('servicios')" id="tab-servicios" class="flex flex-col items-center justify-center text-white/70 hover:text-celeste transition-all">
+            <i data-lucide="shield" class="h-6 w-6"></i>
+            <span class="text-[10px] font-extrabold mt-1.5 uppercase tracking-tight font-tech">Servicios</span>
+        </button>
+        <button onclick="navigateTo('tecnologia')" id="tab-tecnologia" class="flex flex-col items-center justify-center text-white/70 hover:text-celeste transition-all">
+            <i data-lucide="cpu" class="h-6 w-6"></i>
+            <span class="text-[10px] font-extrabold mt-1.5 uppercase tracking-tight font-tech">SOC / INFRA</span>
+        </button>
+        <button onclick="navigateTo('nosotros')" id="tab-nosotros" class="flex flex-col items-center justify-center text-white/70 hover:text-celeste transition-all">
+            <i data-lucide="users" class="h-6 w-6"></i>
+            <span class="text-[10px] font-extrabold mt-1.5 uppercase tracking-tight font-tech">Nosotros</span>
+        </button>
+        <button onclick="navigateTo('contacto')" id="tab-contacto" class="flex flex-col items-center justify-center text-white/70 hover:text-celeste transition-all">
+            <i data-lucide="message-square" class="h-6 w-6"></i>
+            <span class="text-[10px] font-extrabold mt-1.5 uppercase tracking-tight font-tech">Cotizar</span>
+        </button>
+    </div>
+
+    <!-- Global Toast Alert Center -->
+    <div id="toast" class="fixed bottom-24 lg:bottom-8 right-8 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-white border border-slate-200 border-l-4 border-l-electric p-5 rounded-r-xl shadow-2xl flex items-center gap-4 max-w-md text-slate-900">
+        <div class="text-electric" id="toast-icon">
+            <i data-lucide="info" class="h-7 w-7"></i>
+        </div>
+        <div>
+            <p class="font-extrabold text-xs text-navy tracking-wide uppercase" id="toast-title">Notificación</p>
+            <p class="text-xs text-slate-600 mt-1" id="toast-desc">Actualización del sistema procesada.</p>
+        </div>
+    </div>
+
+    <!-- MAIN BODY SECTIONS - Appended pb-20 on mobile to ensure content isn't layered behind tab bar -->
+    <main class="flex-grow pb-24 lg:pb-0">
+
+        <!-- VIEW: INICIO (PÁGINA PRINCIPAL) -->
+        <section id="view-inicio" class="view-section relative overflow-hidden py-8 lg:py-16">
+            
+            <!-- Connection Line decorations based on image_4e56e3.png -->
+            <div class="tech-line w-1/3 left-0 top-1/4"></div>
+            <div class="tech-line w-1/4 right-0 top-3/4"></div>
+            <div class="tech-line-vert h-40 left-16 top-8"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Hero Text -->
+                    <div class="lg:col-span-7 space-y-6 bg-white/90 backdrop-blur-md p-6 sm:p-10 rounded-3xl border border-white/80 tech-shadow">
+                        <div class="inline-flex items-center gap-2.5 bg-electric/10 border border-electric/30 py-2 px-5 rounded-xl">
+                            <span class="text-xs font-extrabold text-electric uppercase tracking-widest font-tech">Innovación Digital</span>
+                        </div>
+                        
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-navy">
+                            SEGURIDAD &amp; <br>
+                            <span class="gradient-text font-tech">TECNOLOGÍA E INNOVACIÓN</span>
+                        </h1>
+                        
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-20 h-1.5 bg-electric rounded-full"></div>
+                            <div class="w-4 h-1.5 bg-turquoise rounded-full"></div>
+                            <div class="w-2.5 h-1.5 bg-celeste rounded-full"></div>
+                        </div>
+
+                        <p class="text-bodyText text-base font-medium leading-relaxed max-w-2xl">
+                            Revolucionamos la seguridad física en Chile combinando <strong class="text-navy font-bold">Conserjería Remota Avanzada 24/7</strong>, video-analítica inteligente en la nube Azure y redes de telecomunicaciones de alta disponibilidad. Llevamos tu comunidad o PyME al estándar del mañana.
+                        </p>
+
+                        <!-- Key Stats Grid with high-contrast slate borders -->
+                        <div class="grid grid-cols-3 gap-4 py-3 max-w-xl">
+                            <div class="border border-slate-200 bg-white p-4 rounded-2xl tech-shadow text-center">
+                                <p class="text-2xl sm:text-3xl font-black text-electric font-tech">&lt;60s</p>
+                                <p class="text-[10px] uppercase font-bold tracking-wider text-mutedText mt-1">Reacción SOC</p>
+                            </div>
+                            <div class="border border-slate-200 bg-white p-4 rounded-2xl tech-shadow text-center">
+                                <p class="text-2xl sm:text-3xl font-black text-navy font-tech">99.9%</p>
+                                <p class="text-[10px] uppercase font-bold tracking-wider text-mutedText mt-1">Uptime Redes</p>
+                            </div>
+                            <div class="border border-slate-200 bg-white p-4 rounded-2xl tech-shadow text-center">
+                                <p class="text-2xl sm:text-3xl font-black text-turquoise font-tech">730d</p>
+                                <p class="text-[10px] uppercase font-bold tracking-wider text-mutedText mt-1">Video Cloud</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center pt-2">
+                            <button onclick="navigateTo('contacto')" class="bg-gradient-to-r from-electric to-celeste text-white font-extrabold py-4 px-9 rounded-xl tracking-wide uppercase text-xs shadow-lg shadow-electric/25 hover:scale-[1.02] transition-transform">
+                                Solicitar Propuesta Técnica
+                            </button>
+                            <button onclick="navigateTo('servicios')" class="border-2 border-slate-300 hover:border-electric bg-white text-navy font-extrabold py-4 px-9 rounded-xl text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2.5 tech-shadow">
+                                Explorar Soluciones <i data-lucide="arrow-right" class="h-5 w-5 text-electric"></i>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-3 text-xs text-mutedText pt-2">
+                            <i data-lucide="shield-check" class="h-6 w-6 text-turquoise flex-shrink-0"></i>
+                            <span class="font-semibold">Acreditación certificada según Ley 21.659 y OS10 de Carabineros de Chile</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Hero Visuals - Re-proportioned to separate the hexagons and make texts completely visible -->
+                    <div class="lg:col-span-5 relative flex items-center justify-center min-h-[440px] lg:min-h-[540px]">
+                        
+                        <!-- Floating Decorative Corner Hexagons from image_4e56e3.png -->
+                        <div class="absolute -top-10 -left-10 w-24 h-24 bg-gradient-to-br from-electric/20 to-celeste/20 hexagon-clip pointer-events-none"></div>
+                        <div class="absolute -bottom-10 right-10 w-28 h-28 bg-gradient-to-br from-turquoise/20 to-celeste/20 hexagon-clip pointer-events-none"></div>
+                        
+                        <!-- Main Hexagon Frame 1 (Separated slightly higher and to the left) -->
+                        <div class="absolute w-[260px] h-[230px] sm:w-[350px] sm:h-[310px] lg:w-[410px] lg:h-[360px] left-[-15px] top-[-20px] z-20 hexagon-border tech-shadow">
+                            <div class="hexagon-inner w-full h-full relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-85 z-10"></div>
+                                <img 
+                                    src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=600" 
+                                    alt="Soporte Kraibe SOC" 
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    onerror="this.src='https://placehold.co/600x600/0a1a2e/ffffff?text=OPERADOR+KRAIBE+SOC'"
+                                />
+                                <!-- Pushed text higher and applied safety horizontal paddings to prevent clipping on the angled edges -->
+                                <div class="absolute bottom-8 left-10 right-10 sm:bottom-12 sm:left-14 sm:right-14 z-20 text-white text-center">
+                                    <span class="text-[10px] font-extrabold tracking-widest text-turquoise font-tech">CENTRAL SOC</span>
+                                    <h3 class="text-xs sm:text-sm font-bold tracking-wide mt-2 uppercase">SOPORTE CONCEPCIÓN 24/7</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Hexagon Frame 2 (Separated further bottom-right with safe text paddings) -->
+                        <div class="absolute w-[200px] h-[175px] sm:w-[260px] sm:h-[225px] lg:w-[310px] lg:h-[270px] right-[-15px] bottom-[-20px] z-30 hexagon-border tech-shadow">
+                            <div class="hexagon-inner w-full h-full relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-95 z-10"></div>
+                                <img 
+                                    src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=400" 
+                                    alt="CCTV Analíticas" 
+                                    class="w-full h-full object-cover grayscale opacity-50"
+                                    onerror="this.src='https://placehold.co/400x400/050d17/ffffff?text=ANALITICAS+AI'"
+                                />
+                                <!-- Applied generous safety padding to keep all console lines unclipped by the diagonals -->
+                                <div class="absolute inset-0 flex flex-col justify-between pt-8 pb-8 px-10 sm:pt-10 sm:pb-10 sm:px-14 z-20 text-white font-mono text-[9px] sm:text-xs scanning">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-turquoise font-bold tracking-wider">KRAIBE AI</span>
+                                        <span class="text-red-500 animate-pulse font-bold">• CLOUD</span>
+                                    </div>
+                                    <div class="my-auto text-center border border-celeste/40 p-2 rounded bg-navy/95 shadow">
+                                        <p class="text-white font-tech font-extrabold text-[10px] sm:text-sm">DETECCIÓN ACTIVA</p>
+                                    </div>
+                                    <div class="flex justify-between text-[9px] text-gray-300">
+                                        <span>PING: 18ms</span>
+                                        <span>OS10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAVINGS CALCULATOR -->
+            <div class="bg-white/85 backdrop-blur-md border-y border-slate-200/60 py-10 lg:py-16 mt-12 relative">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                    <div class="text-center max-w-3xl mx-auto mb-10">
+                        <span class="text-electric text-[11px] sm:text-xs font-extrabold uppercase tracking-wider font-tech">PLANIFICACIÓN FINANCIERA &amp; ROI</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-navy mt-1.5">
+                            Simulador Financiero de <span class="gradient-text font-tech">Ahorro Mensual</span>
+                        </h2>
+                        <p class="text-bodyText mt-2.5 text-xs sm:text-sm font-medium">
+                            Compare el alto costo de mantener turnos de conserjes físicos 24/7 en Chile versus nuestra Conserjería Remota unificada.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+                        
+                        <!-- Calculator Inputs Column -->
+                        <div class="lg:col-span-5 bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 tech-shadow flex flex-col justify-between text-navy">
+                            <div>
+                                <h3 class="text-sm sm:text-base font-extrabold text-navy mb-8 flex items-center gap-2.5 border-b border-slate-100 pb-4">
+                                    <i data-lucide="sliders" class="text-electric h-5.5 w-5.5"></i> Parámetros de Personal Actual
+                                </h3>
+                                
+                                <div class="space-y-8">
+                                    <!-- Input 1: Physical guard count -->
+                                    <div>
+                                        <div class="flex justify-between items-center mb-3 text-xs">
+                                            <span class="font-extrabold text-mutedText uppercase tracking-wider">Dotación de Turnos (Físico):</span>
+                                            <span id="label-guardias" class="text-electric font-black font-tech text-base sm:text-lg">4 Operadores</span>
+                                        </div>
+                                        <input 
+                                            type="range" 
+                                            id="input-guardias" 
+                                            min="1" 
+                                            max="8" 
+                                            value="4" 
+                                            class="w-full accent-electric bg-slate-200 rounded-lg h-2.5 cursor-pointer"
+                                            oninput="updateCalculatorValues()"
+                                        >
+                                        <div class="flex justify-between text-[10px] text-mutedText mt-2 font-mono font-bold">
+                                            <span>1 Persona</span>
+                                            <span>4 Personas (Pauta 24/7)</span>
+                                            <span>8 Personas</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Input 2: Monthly cost per guard -->
+                                    <div>
+                                        <div class="flex justify-between items-center mb-3 text-xs">
+                                            <span class="font-extrabold text-mutedText uppercase tracking-wider">Costo promedio mensual:</span>
+                                            <span id="label-costo" class="text-electric font-black font-tech text-base sm:text-lg">$850.000</span>
+                                        </div>
+                                        <input 
+                                            type="range" 
+                                            id="input-costo" 
+                                            min="650000" 
+                                            max="1500000" 
+                                            step="50000" 
+                                            value="850000" 
+                                            class="w-full accent-electric bg-slate-200 rounded-lg h-2.5 cursor-pointer"
+                                            oninput="updateCalculatorValues()"
+                                        >
+                                        <div class="flex justify-between text-[10px] text-mutedText mt-2 font-mono font-bold">
+                                            <span>$650.000 (Mínimo)</span>
+                                            <span>$850.000 (Mercado)</span>
+                                            <span>$1.500.000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 p-5 bg-slate-50 rounded-2xl border border-slate-100 text-xs text-bodyText space-y-2.5 font-medium">
+                                <p class="font-bold text-navy text-sm">¿Por qué hay tanta ineficiencia?</p>
+                                <p class="text-[12px] leading-relaxed">Un servicio físico 24/7 requiere cubrir licencias, feriados, horas extras e indemnizaciones. La sucursal virtual asistida de Kraibe centraliza la operación eliminando imprevistos laborales.</p>
+                            </div>
+                        </div>
+
+                        <!-- Comparison Results Display -->
+                        <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8">
+                            
+                            <!-- Panel: Gasto Físico Tradicional -->
+                            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-red-200 tech-shadow flex flex-col justify-between relative overflow-hidden text-navy">
+                                <div class="absolute right-0 top-0 bg-red-100 text-red-700 text-[10px] sm:text-[11px] uppercase font-extrabold tracking-wider px-4 sm:px-5 py-1.5 rounded-bl-xl">
+                                    Gasto Tradicional
+                                </div>
+                                <div class="pt-3">
+                                    <h4 class="text-xs font-black text-red-700 uppercase tracking-wider">Logística Convencional</h4>
+                                    <p class="text-[11px] text-mutedText mt-1">Sueldo, leyes sociales y contingencias de personal físico.</p>
+                                </div>
+                                <div class="my-6 sm:my-8">
+                                    <p class="text-[10px] text-mutedText font-mono font-bold">Gasto Mensual Estimado</p>
+                                    <p id="total-fisico-mes" class="text-3xl sm:text-4xl font-black text-red-600 font-tech tracking-tight mt-1">$3.400.000</p>
+                                    <p class="text-sm text-slate-700 mt-2 font-semibold">Costo Proyectado Anual: <span id="total-fisico-ano" class="font-bold text-red-600">$40.800.000</span></p>
+                                </div>
+                                <ul class="text-xs sm:text-sm text-bodyText space-y-3 border-t border-slate-100 pt-5 font-medium">
+                                    <li class="flex items-center gap-2.5"><i data-lucide="alert-triangle" class="h-5 w-5 text-red-600 flex-shrink-0"></i> Expuesto a ausentismo y licencias</li>
+                                    <li class="flex items-center gap-2.5"><i data-lucide="alert-triangle" class="h-5 w-5 text-red-600 flex-shrink-0"></i> No genera registro o bitácora digital</li>
+                                </ul>
+                            </div>
+
+                            <!-- Panel: Solución Kraibe -->
+                            <div class="bg-gradient-to-br from-navy to-navy-light p-6 sm:p-8 rounded-2xl text-white border border-navy-muted tech-shadow flex flex-col justify-between relative overflow-hidden">
+                                <div class="absolute right-0 top-0 bg-turquoise text-navy text-[10px] sm:text-[11px] uppercase font-extrabold tracking-wider px-4 sm:px-5 py-1.5 rounded-bl-xl">
+                                    Kraibe Core
+                                </div>
+                                <div class="pt-3">
+                                    <h4 class="text-xs font-black text-celeste uppercase tracking-wider">Sistema Remoto Kraibe</h4>
+                                    <p class="text-[11px] text-slate-300 mt-1 font-light">Suscripción fija mensual con cobertura 24/7 sin sorpresas.</p>
+                                </div>
+                                <div class="my-4 sm:my-6">
+                                    <p class="text-[10px] text-slate-400 font-mono">Cuota Mensual Optimizada</p>
+                                    <p id="total-kraibe-mes" class="text-3xl sm:text-4xl font-black text-turquoise font-tech tracking-tight mt-1">$1.350.000</p>
+                                    <p class="text-xs text-slate-200 mt-1.5">Ahorro Mensual: <span id="ahorro-mensual" class="font-bold text-celeste">$2.050.000</span></p>
+                                </div>
+                                
+                                <div class="bg-white/10 border border-white/20 p-4 sm:p-5 rounded-2xl text-center my-2">
+                                    <span class="text-[10px] uppercase font-bold tracking-wider text-celeste">Ahorro Anual Neto Proyectado</span>
+                                    <p id="ahorro-anual" class="text-xl sm:text-2xl font-black text-white font-tech mt-1">$24.600.000</p>
+                                </div>
+
+                                <ul class="text-xs sm:text-sm text-slate-200 space-y-2">
+                                    <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-turquoise h-5 w-5 flex-shrink-0"></i> SOC Continuo libre de vacíos</li>
+                                    <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-turquoise h-5 w-5 flex-shrink-0"></i> Custodia de video Azure 730 días</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Core Pillars -->
+            <div class="py-12 lg:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-10 bg-white/70 backdrop-blur-md p-5 rounded-xl border border-white/50 shadow-sm">
+                    <span class="text-electric text-[10px] sm:text-xs font-extrabold uppercase tracking-wider font-tech">TECNOLOGÍA DE VANGUARDIA</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-navy mt-1.5">Pilares de una Operación Confiable</h2>
+                    <p class="text-bodyText mt-2 text-xs font-medium">Garantizamos la máxima eficiencia y continuidad operativa combinando software, hardware y rigurosidad legal.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Card 1 -->
+                    <div class="bg-white/95 border border-slate-200/80 p-6 sm:p-8 rounded-2xl tech-shadow hover:border-electric/55 transition-all flex flex-col justify-between text-navy">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-electric/10 border border-electric/30 flex items-center justify-center text-electric mb-5">
+                                <i data-lucide="server" class="h-6 w-6"></i>
+                            </div>
+                            <h3 class="text-sm sm:text-base font-bold text-navy mb-2.5">Central SOC Propietaria</h3>
+                            <p class="text-bodyText text-[12px] sm:text-xs leading-relaxed mb-5 font-medium">
+                                No derivamos ni subcontratamos el monitoreo. Contamos con una central de seguridad SOC privada en Concepción, certificada por la autoridad fiscalizadora (OS10), garantizando control directo.
+                            </p>
+                        </div>
+                        <span class="text-electric text-[10px] font-bold uppercase tracking-widest font-tech">INFRAESTRUCTURA PROPIA</span>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white/95 border border-slate-200/80 p-6 sm:p-8 rounded-2xl tech-shadow hover:border-electric/55 transition-all flex flex-col justify-between text-navy">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-celeste/10 border border-celeste/30 flex items-center justify-center text-navy mb-5">
+                                <i data-lucide="shield-check" class="h-6 w-6 text-electric"></i>
+                            </div>
+                            <h3 class="text-sm sm:text-base font-bold text-navy mb-2.5">Seguridad Legal & OS10</h3>
+                            <p class="text-bodyText text-[12px] sm:text-xs leading-relaxed mb-5 font-medium">
+                                Diseñamos arquitecturas respetando estrictamente la Ley 21.659 de seguridad privada en Chile. Todo nuestro personal cuenta con las habilitaciones correspondientes para actuar con validez judicial.
+                            </p>
+                        </div>
+                        <span class="text-electric text-[10px] font-bold uppercase tracking-widest font-tech">CUMPLIMIENTO NORMATIVO</span>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white/95 border border-slate-200/80 p-6 sm:p-8 rounded-2xl tech-shadow hover:border-electric/55 transition-all flex flex-col justify-between text-navy">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-turquoise/10 border border-turquoise/30 flex items-center justify-center text-turquoise mb-5">
+                                <i data-lucide="cloud-lightning" class="h-6 w-6"></i>
+                            </div>
+                            <h3 class="text-sm sm:text-base font-bold text-navy mb-2.5">Resguardo Digital Azure</h3>
+                            <p class="text-bodyText text-[12px] sm:text-xs leading-relaxed mb-5 font-medium">
+                                Las grabaciones de eventos clave y bitácoras operativas se sincronizan de inmediato a la nube de Microsoft Azure. Protegemos tu evidencia contra sabotajes físicos o robos del equipamiento local.
+                            </p>
+                        </div>
+                        <span class="text-turquoise text-[10px] font-bold uppercase tracking-widest font-tech">RESPALDO INMUTABLE CLOUD</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: SERVICIOS -->
+        <section id="view-servicios" class="view-section hidden relative py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12 bg-white/70 backdrop-blur-md p-5 rounded-xl border border-white/50 shadow-sm">
+                    <span class="text-electric text-xs font-extrabold uppercase tracking-wider font-tech">PORTFOLIO CORPORATIVO</span>
+                    <h2 class="text-xl sm:text-3xl font-black text-navy mt-1.5">Servicios Tecnológicos de Alta Seguridad</h2>
+                    <p class="text-bodyText mt-2.5 text-xs sm:text-sm font-medium">
+                        Diseñamos, implementamos y operamos soluciones con foco en la automatización, reducción de gastos de administración y robustez operacional.
+                    </p>
+                </div>
+
+                <div class="space-y-10 sm:space-y-16">
+                    
+                    <!-- Service Group 1: Conserjería Remota -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white/95 backdrop-blur-md p-6 sm:p-10 rounded-2xl border border-slate-200 tech-shadow text-navy">
+                        <div class="lg:col-span-7 space-y-5">
+                            <div class="inline-flex items-center gap-2 bg-electric/10 border border-electric/30 py-1.5 px-4 rounded text-[10px] font-bold text-electric uppercase font-tech">
+                                <i data-lucide="key" class="h-3.5 w-3.5"></i> CONSERJERÍA INTEGRAL VIRTUAL
+                            </div>
+                            <h3 class="text-lg sm:text-2xl font-bold text-navy">Conserjería Remota e Intercomunicación IP</h3>
+                            <p class="text-bodyText text-xs sm:text-sm leading-relaxed font-medium">
+                                Reemplazamos al operador físico mediante terminales inteligentes de acceso y citofonía IP bidireccional conectada directamente a nuestro SOC. Gestionamos visitas, correspondencia y portones vehiculares con total trazabilidad.
+                            </p>
+                            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[12px] sm:text-xs text-bodyText font-semibold">
+                                <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-electric h-5 w-5 flex-shrink-0"></i> Citofonía virtual directa a celulares</li>
+                                <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-electric h-5 w-5 flex-shrink-0"></i> Apertura remota de portones con patente</li>
+                                <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-electric h-5 w-5 flex-shrink-0"></i> Registro digital inmutable de accesos</li>
+                                <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-electric h-5 w-5 flex-shrink-0"></i> Enlace prioritario Alfa III</li>
+                            </ul>
+                            <div class="pt-2">
+                                <button onclick="navigateTo('contacto')" class="w-full sm:w-auto bg-electric hover:bg-navy text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-7 rounded-xl transition-all shadow-md shadow-electric/25">
+                                    Cotizar Conserjería para Condominio
+                                </button>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-5 bg-slate-50 p-5 sm:p-8 rounded-xl border border-slate-200">
+                            <h4 class="text-[10px] font-bold text-navy uppercase tracking-wider mb-5 border-b border-slate-200 pb-3">VENTAJA KRAIBE</h4>
+                            <div class="space-y-5">
+                                <div class="bg-white p-4 rounded-xl border border-slate-200">
+                                    <p class="text-[10px] font-bold text-electric uppercase font-tech">Garantía en Sitio Incluida</p>
+                                    <p class="text-[12px] text-bodyText mt-1 font-medium">Soporte correctivo y mantenciones programadas sin costo extra durante el contrato.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-xl border border-slate-200">
+                                    <p class="text-[10px] font-bold text-turquoise uppercase font-tech">Continuidad Operativa Absoluta</p>
+                                    <p class="text-[12px] text-bodyText mt-1 font-medium">Sistemas energizados vía UPS de alta descarga ante cortes de luz del sector.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Group 2: CCTV Inteligente & Analíticas AI -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white/95 backdrop-blur-md p-6 sm:p-10 rounded-2xl border border-slate-200 tech-shadow text-navy">
+                        <div class="lg:col-span-5 bg-slate-50 p-5 sm:p-8 rounded-xl border border-slate-200">
+                            <h4 class="text-[10px] font-bold text-navy uppercase tracking-wider mb-5 border-b border-slate-200 pb-3">MÉTRICAS DE DETECCIÓN</h4>
+                            <div class="space-y-5">
+                                <div class="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 flex justify-between items-center shadow-sm">
+                                    <div>
+                                        <p class="text-xs font-bold text-navy">Falsas Alarmas Filtradas</p>
+                                        <p class="text-[11px] text-mutedText">Ignora animales y sombras</p>
+                                    </div>
+                                    <span class="text-xs font-black text-turquoise font-tech">98.2%</span>
+                                </div>
+                                <div class="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 flex justify-between items-center shadow-sm">
+                                    <div>
+                                        <p class="text-xs font-bold text-navy">Tiempo de Detección</p>
+                                        <p class="text-[11px] text-mutedText">Procesamiento en borde</p>
+                                    </div>
+                                    <span class="text-xs font-black text-electric font-tech">&lt;0.5s</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-7 space-y-5">
+                            <div class="inline-flex items-center gap-2 bg-celeste/10 border border-celeste/30 py-1.5 px-4 rounded text-[10px] font-bold text-electric uppercase font-tech">
+                                <i data-lucide="eye" class="h-3.5 w-3.5"></i> MONITOREO PROACTIVO DE VIDEO
+                            </div>
+                            <h3 class="text-lg sm:text-2xl font-bold text-navy">CCTV Inteligente Asistido por IA</h3>
+                            <p class="text-bodyText text-xs sm:text-sm leading-relaxed font-medium">
+                                No grabamos en silencio esperando que ocurra un robo. Nuestras cámaras de seguridad incorporan analíticas avanzadas que identifican de manera automática siluetas humanas, alertando al SOC en tiempo real.
+                            </p>
+                            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[12px] sm:text-xs text-bodyText font-semibold">
+                                <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-electric h-5 w-5 flex-shrink-0"></i> Cruce de líneas digitales disuasivas</li>
+                                <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-electric h-5 w-5 flex-shrink-0"></i> Parlante con perifoneo de audio en vivo</li>
+                                <li class="flex items-center gap-2.5"><i data-lucide="check" class="text-electric h-5 w-5 flex-shrink-0"></i> Almacenamiento local + respaldo en Azure</li>
+                            </ul>
+                            <div class="pt-2">
+                                <button onclick="navigateTo('contacto')" class="w-full sm:w-auto bg-electric hover:bg-navy text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-7 rounded-xl transition-all shadow-md">
+                                    Solicitar Auditoría de Cámaras Gratis
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Group 3: Infraestructura Redes -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white/95 backdrop-blur-md p-6 sm:p-10 rounded-2xl border border-slate-200 tech-shadow text-navy">
+                        <div class="lg:col-span-7 space-y-5">
+                            <div class="inline-flex items-center gap-2 bg-turquoise/15 border border-turquoise/30 py-1.5 px-4 rounded text-[10px] font-bold text-turquoise uppercase font-tech">
+                                <i data-lucide="cpu" class="h-3.5 w-3.5"></i> ENLACES DIGITALES CONFIABLES
+                            </div>
+                            <h3 class="text-lg sm:text-2xl font-bold text-navy">Redes de Alta Disponibilidad & Fibra Óptica</h3>
+                            <p class="text-bodyText text-xs sm:text-sm leading-relaxed font-medium">
+                                Una solución de seguridad remota es tan buena como su conectividad. En Kraibe diseñamos e implementamos tendidos de fibra óptica propios, enlaces de respaldo inalámbricos microondas y topologías industriales unificadas.
+                            </p>
+                            <div class="pt-2">
+                                <button onclick="navigateTo('contacto')" class="w-full sm:w-auto bg-gradient-to-r from-electric to-celeste text-white text-xs font-extrabold uppercase tracking-wider py-3.5 px-7 rounded-xl transition-all shadow-md">
+                                    Agendar Evaluación de Conectividad
+                                </button>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-5 bg-slate-50 p-5 sm:p-8 rounded-xl border border-slate-200 text-center">
+                            <div class="w-14 h-14 sm:w-20 sm:h-20 bg-white border border-slate-200 flex items-center justify-center rounded-full mx-auto text-electric mb-5 shadow-sm">
+                                <i data-lucide="cloud" class="h-8 w-8 sm:h-10 sm:w-10"></i>
+                            </div>
+                            <h4 class="text-xs sm:text-sm font-bold text-navy mb-2">INTEGRACIÓN MULTI-NUBE</h4>
+                            <p class="text-[12px] text-bodyText mb-5 font-medium">
+                                Redundancia de almacenamiento en tiempo real para evitar pérdidas ante siniestros.
+                            </p>
+                            <span class="text-[10px] uppercase font-extrabold text-white bg-navy py-2 px-4 rounded-full font-tech">MICROSOFT AZURE SOC</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: INFRAESTRUCTURA (TECNOLOGÍA & SOC) -->
+        <section id="view-tecnologia" class="view-section hidden relative py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12 bg-white/70 backdrop-blur-md p-5 rounded-xl border border-white/50 shadow-sm">
+                    <span class="text-electric text-xs font-extrabold uppercase tracking-wider font-tech">INFRAESTRUCTURA DE MISIÓN CRÍTICA</span>
+                    <h2 class="text-xl sm:text-3xl font-black text-navy mt-1.5">Nuestra Central de Operaciones SOC</h2>
+                    <p class="text-bodyText mt-2.5 text-xs sm:text-sm font-medium">
+                        Contamos con infraestructura propia y redundante ubicada estratégicamente en Concepción, diseñada bajo los más exigentes estándares de respuesta.
+                    </p>
+                </div>
+
+                <!-- SOC Simulator Visual Widget -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-12">
+                    <div class="lg:col-span-6 space-y-6 text-navy bg-white/70 backdrop-blur-md p-6 sm:p-10 rounded-2xl border border-white/80 tech-shadow">
+                        <span class="text-[10px] font-bold text-electric uppercase font-tech tracking-wider">HERRAMIENTA DEMO INTERACTIVA</span>
+                        <h3 class="text-lg sm:text-2xl font-bold text-navy">Simulador de Alerta de Intrusión</h3>
+                        <p class="text-bodyText text-xs sm:text-sm leading-relaxed font-medium">
+                            Descubra cómo actúa el protocolo automático de Kraibe cuando se detecta una vulneración perimetral. Simule un intento de acceso no autorizado y observe la velocidad de respuesta.
+                        </p>
+                        
+                        <!-- Timeline representation of protocol -->
+                        <div class="space-y-5 pt-2 font-medium text-xs">
+                            <div class="flex gap-4">
+                                <div class="w-7 h-7 rounded-full bg-electric text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-md">1</div>
+                                <div>
+                                    <h4 class="text-xs font-extrabold text-navy uppercase">Detección IA Local (&lt;1s)</h4>
+                                    <p class="text-[12px] text-bodyText mt-1">La cámara con analítica humana captura la silueta y envía el clip crítico.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-7 h-7 rounded-full bg-navy text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-md">2</div>
+                                <div>
+                                    <h4 class="text-xs font-extrabold text-navy uppercase">Validación por Operador (&lt;15s)</h4>
+                                    <p class="text-[12px] text-bodyText mt-1">Nuestra central en Concepción recibe la pre-alarma con prioridad absoluta.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-7 h-7 rounded-full bg-turquoise text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-md">3</div>
+                                <div>
+                                    <h4 class="text-xs font-extrabold text-navy uppercase">Disuasión &amp; Despacho (&lt;45s)</h4>
+                                    <p class="text-[12px] text-bodyText mt-1">El operador emite audio en vivo para advertir al intruso y despacha la patrulla.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive SOC Widget panel -->
+                    <div class="lg:col-span-6 bg-navy text-white p-6 sm:p-8 rounded-2xl border-2 border-navy-light tech-shadow relative overflow-hidden">
+                        <div class="absolute -right-24 -top-24 w-64 h-64 bg-electric/20 rounded-full blur-3xl pointer-events-none"></div>
+                        
+                        <!-- Header of simulator console -->
+                        <div class="flex justify-between items-center border-b border-navy-muted pb-4 mb-5 text-xs font-mono">
+                            <span class="flex items-center gap-2 text-turquoise font-semibold">
+                                <span class="h-2.5 w-2.5 rounded-full bg-turquoise animate-pulse"></span> CONSOLA MONITOR SOC V.4
+                            </span>
+                            <span class="text-slate-400 text-[10px]">CONCEPCIÓN</span>
+                        </div>
+
+                        <!-- Live Visual Feed simulation screen -->
+                        <div class="relative bg-black h-56 sm:h-64 rounded-xl overflow-hidden border border-navy-muted flex flex-col justify-between p-5 scanning">
+                            <div class="flex justify-between items-start z-10">
+                                <span class="bg-black/80 px-2.5 py-1 rounded text-[10px] text-slate-400 font-mono">CAM-02 | ACCESO SUR</span>
+                                <span id="sim-status" class="bg-turquoise/20 text-turquoise border border-turquoise/30 text-[10px] px-2.5 py-1 rounded font-mono">ESTADO: PASIVO</span>
+                            </div>
+
+                            <!-- Screen message center -->
+                            <div class="my-auto text-center relative z-20 space-y-2">
+                                <p id="sim-message" class="text-xs sm:text-base font-extrabold text-gray-100 tracking-wide">Listo para iniciar simulación</p>
+                                <p id="sim-time" class="text-[10px] font-mono text-slate-400">Protocolo IDLE — Latencia: 14ms</p>
+                            </div>
+
+                            <div class="flex justify-between items-end z-10 text-[10px] font-mono text-slate-400">
+                                <span>GPS: -36.8315, -73.0514</span>
+                                <span id="sim-countdown" class="font-bold text-white text-xs sm:text-sm">00:00:00</span>
+                            </div>
+                        </div>
+
+                        <!-- Interface Controls for users -->
+                        <div class="mt-6 pt-4 border-t border-navy-muted flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <p class="text-[12px] sm:text-xs text-gray-300">Presione para iniciar el protocolo:</p>
+                            <button onclick="startSimulation()" class="w-full sm:w-auto bg-gradient-to-r from-electric to-celeste hover:from-celeste hover:to-turquoise text-[11px] font-bold uppercase py-3 px-5 rounded-xl tracking-wider transition-colors shadow-md">
+                                ACTIVAR INTRUSIÓN
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- High-performance stats pillars -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center bg-white/95 backdrop-blur-md p-6 sm:p-10 rounded-2xl border border-slate-200 text-navy tech-shadow">
+                    <div>
+                        <p class="text-3xl sm:text-4xl font-black text-electric font-tech mb-2">99.9%</p>
+                        <h4 class="text-[11px] sm:text-xs font-bold text-navy uppercase tracking-wider mb-2">Disponibilidad Eléctrica</h4>
+                        <p class="text-[12px] sm:text-xs text-bodyText font-medium">Bancos de baterías dedicados ante emergencias del suministro.</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl sm:text-4xl font-black text-electric font-tech mb-2">2 Años</p>
+                        <h4 class="text-[11px] sm:text-xs font-bold text-navy uppercase tracking-wider mb-2">Custodia de Bitácora</h4>
+                        <p class="text-[12px] sm:text-xs text-bodyText font-medium">Resguardo completo exigido por el OS10 de Carabineros de Chile.</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl sm:text-4xl font-black text-turquoise font-tech mb-2">Alfa III</p>
+                        <h4 class="text-[11px] sm:text-xs font-bold text-navy uppercase tracking-wider mb-2">Enlace Directo Policial</h4>
+                        <p class="text-[12px] sm:text-xs text-bodyText font-medium">Priorización automática de llamadas al confirmar visualmente una intrusión activa.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW: NOSOTROS -->
+        <section id="view-nosotros" class="view-section hidden relative py-12 text-navy">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12 bg-white/70 backdrop-blur-md p-5 rounded-xl border border-white/50 shadow-sm">
+                    <span class="text-electric text-xs font-extrabold uppercase tracking-wider font-tech">SOBRE KRAIBE</span>
+                    <h2 class="text-xl sm:text-3xl font-black text-navy mt-1.5">Seguridad e Ingeniería Chilena</h2>
+                    <p class="text-bodyText mt-2.5 text-xs sm:text-sm font-medium">
+                        Somos ingenieros y expertos en seguridad electrónica dedicados a erradicar las ineficiencias de la seguridad física tradicional.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-12">
+                    <div class="lg:col-span-6 space-y-5 bg-white/80 backdrop-blur-md p-6 sm:p-10 rounded-2xl border border-white/80 tech-shadow">
+                        <h3 class="text-lg sm:text-2xl font-bold text-navy">Misión: Transformar Comunidades Mediante Conectividad</h3>
+                        <p class="text-bodyText text-[12px] sm:text-xs leading-relaxed font-medium">
+                            Kraibe nace en la Región del Biobío ante la creciente inestabilidad y el encarecimiento de los servicios tradicionales de conserjes y guardias en el país. Entendimos que la seguridad real no reside en contratar más personas, sino en dotar de herramientas tecnológicas avanzadas que brinden respuestas fiables, grabaciones seguras e inmutables, y un control riguroso de accesos.
+                        </p>
+                        <p class="text-bodyText text-[12px] sm:text-xs leading-relaxed font-medium">
+                            Hoy operamos bajo la estricta Ley de Seguridad Privada de Chile (Ley 21.659), proveyendo soluciones profesionales en el territorio nacional con soporte técnico especializado directo.
+                        </p>
+                        <div class="pt-3">
+                            <span class="text-xs sm:text-sm font-extrabold text-electric uppercase font-tech flex items-center gap-3">
+                                <i data-lucide="shield" class="h-6 w-6 text-turquoise"></i> OPERACIÓN CONCEPCIÓN — MAULE — LOS LAGOS
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Coverage Map & Territorial Presence Widget -->
+                    <div class="lg:col-span-6 bg-white/95 backdrop-blur-md p-6 sm:p-10 rounded-2xl border border-slate-200 tech-shadow">
+                        <h3 class="text-sm sm:text-lg font-bold text-navy mb-3">Soporte Técnico en Terreno</h3>
+                        <p class="text-bodyText text-[12px] sm:text-xs leading-relaxed mb-8 font-medium">
+                            Contamos con técnicos certificados y móviles dedicadas para garantizar la correcta mantención de equipamiento.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-xs font-semibold text-navy">
+                            <div class="flex items-center gap-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200">
+                                <i data-lucide="map-pin" class="text-electric h-5 w-5 flex-shrink-0"></i>
+                                <span>R. del Maule</span>
+                            </div>
+                            <div class="flex items-center gap-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200">
+                                <i data-lucide="map-pin" class="text-electric h-5 w-5 flex-shrink-0"></i>
+                                <span>R. de Ñuble</span>
+                            </div>
+                            <div class="flex items-center gap-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200">
+                                <i data-lucide="map-pin" class="text-electric h-5 w-5 flex-shrink-0"></i>
+                                <span>R. del Biobío</span>
+                            </div>
+                            <div class="flex items-center gap-3 bg-slate-50 p-3 sm:p-4 rounded-xl border border-slate-200">
+                                <i data-lucide="map-pin" class="text-electric h-5 w-5 flex-shrink-0"></i>
+                                <span>R. de Los Lagos</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-5 border-t border-slate-200 text-[11px] sm:text-xs text-mutedText font-medium">
+                            <p>Oficinas Comerciales: Cochrane 635, Of. 607A, Concepción.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW: CONTACTO / COTIZADOR -->
+        <section id="view-contacto" class="view-section hidden relative py-12 text-navy">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12 bg-white/70 backdrop-blur-md p-5 rounded-xl border border-white/50 shadow-sm">
+                    <span class="text-electric text-xs font-extrabold uppercase tracking-wider font-tech">DISEÑO DE PROPUESTA</span>
+                    <h2 class="text-xl sm:text-3xl font-black text-navy mt-1.5">Formulario de Cotización de Proyecto</h2>
+                    <p class="text-bodyText mt-2.5 text-xs sm:text-sm font-medium">
+                        Déjanos los datos de tu condominio o empresa y nuestro equipo técnico diseñará un presupuesto a medida sin costo comercial.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+                    
+                    <!-- Left: Interactive Form -->
+                    <div class="lg:col-span-7 bg-white/95 backdrop-blur-lg p-6 sm:p-10 rounded-2xl border border-slate-200 tech-shadow">
+                        <h3 class="text-sm sm:text-lg font-bold text-navy mb-8 flex items-center gap-3 border-b border-slate-100 pb-4">
+                            <i data-lucide="mail-check" class="text-electric h-5.5 w-5.5"></i> Formulario de Requerimiento Técnico
+                        </h3>
+                        
+                        <form id="quote-form" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-[11px] font-extrabold uppercase text-slate-700 mb-2 tracking-wide">Nombre del Contacto</label>
+                                    <input required type="text" id="form-name" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-5 py-4 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-electric focus:bg-white transition-all placeholder-slate-400 font-medium" placeholder="Ej: Gonzalo Kraemer">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-extrabold uppercase text-slate-700 mb-2 tracking-wide">Correo Electrónico</label>
+                                    <input required type="email" id="form-email" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-5 py-4 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-electric focus:bg-white transition-all placeholder-slate-400 font-medium" placeholder="ejemplo@kraibe.cl">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-[11px] font-extrabold uppercase text-slate-700 mb-2 tracking-wide">Teléfono de Contacto</label>
+                                    <input required type="text" id="form-phone" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-5 py-4 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-electric focus:bg-white transition-all placeholder-slate-400 font-medium" placeholder="Ej: +56 9 5171 5595">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-extrabold uppercase text-slate-700 mb-2 tracking-wide">Tipo de Recinto</label>
+                                    <select id="form-type" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-5 py-4 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-electric focus:bg-white transition-all font-medium">
+                                        <option value="condominio">Condominio Residencial</option>
+                                        <option value="pyme">Empresa / Oficina Comercial</option>
+                                        <option value="industrial">Planta Industrial</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-extrabold uppercase text-slate-700 mb-2 tracking-wide">Ciudad o Comuna</label>
+                                <input required type="text" id="form-city" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-5 py-4 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-electric focus:bg-white transition-all placeholder-slate-400 font-medium" placeholder="Ej: Concepción, Talca, Chillán...">
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-extrabold uppercase text-slate-700 mb-2 tracking-wide">Descripción del Requerimiento</label>
+                                <textarea id="form-message" rows="4" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-5 py-4 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-electric focus:bg-white transition-all placeholder-slate-400 font-medium" placeholder="Cuéntanos sobre tu requerimiento de accesos..."></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-electric to-celeste text-white font-extrabold py-4.5 rounded-xl tracking-wide uppercase text-xs sm:text-sm shadow-md shadow-electric/25 hover:opacity-90 transition-opacity">
+                                ENVIAR SOLICITUD DE DISEÑO
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right: Info details -->
+                    <div class="lg:col-span-5 flex flex-col justify-between gap-8">
+                        
+                        <!-- Channels Card -->
+                        <div class="bg-gradient-to-br from-navy to-navy-light text-white p-6 sm:p-10 rounded-2xl tech-shadow space-y-5 border border-navy-muted">
+                            <h3 class="text-sm sm:text-lg font-bold">Información de Contacto</h3>
+                            <p class="text-xs text-slate-300">Utiliza nuestros canales directos para resolver dudas técnicas.</p>
+                            
+                            <div class="space-y-4 text-xs font-mono">
+                                <a href="https://wa.me/56951715595" target="_blank" class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors">
+                                    <i data-lucide="phone" class="text-turquoise h-6 w-6 flex-shrink-0"></i>
+                                    <div>
+                                        <p class="text-[10px] text-celeste">WHATSAPP DIRECTO</p>
+                                        <p class="text-white text-sm sm:text-base font-bold">+56 9 5171 5595</p>
+                                    </div>
+                                </a>
+
+                                <a href="mailto:gkraemer@kraibe.cl" class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors">
+                                    <i data-lucide="mail" class="text-celeste h-6 w-6 flex-shrink-0"></i>
+                                    <div>
+                                        <p class="text-[10px] text-celeste">CORREO CORPORATIVO</p>
+                                        <p class="text-white text-sm sm:text-base font-bold">gkraemer@kraibe.cl</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Mini map visualization simulation -->
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 flex-grow flex flex-col justify-between tech-shadow text-navy">
+                            <h4 class="text-xs font-extrabold text-navy uppercase tracking-wider mb-3">Central SOC Concepción</h4>
+                            <div class="bg-navy rounded-xl h-44 relative overflow-hidden flex items-center justify-center border border-navy-light">
+                                <div class="absolute inset-0 flex items-center justify-center opacity-25">
+                                    <div class="w-36 h-36 border-2 border-turquoise rounded-full animate-ping"></div>
+                                </div>
+                                <div class="relative z-10 text-center text-white space-y-1.5">
+                                    <i data-lucide="navigation" class="h-7 w-7 text-turquoise mx-auto glow-accent"></i>
+                                    <p class="text-[11px] font-mono tracking-wider">SOC COCHRANE LOCK-ON</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Desktop & Standard Footer - Hidden on native mobile-app structures to prevent clutter -->
+    <footer class="hidden lg:block bg-navy text-white border-t border-navy-muted/50 py-16 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start mb-10">
+                
+                <!-- Brand pitch -->
+                <div class="md:col-span-5 space-y-5">
+                    <img 
+                        src="https://res.cloudinary.com/dway4iqeh/image/upload/v1784412339/WhatsApp_Image_2026-07-18_at_17.20.29-removebg-preview_d8wque.png" 
+                        alt="Kraibe Soluciones Logo" 
+                        class="h-24 w-auto object-contain"
+                        onerror="this.src='https://placehold.co/360x120/0a1a2e/ffffff?text=KRAIBE+SOLUCIONES'"
+                    />
+                    <p class="text-slate-300 text-xs leading-relaxed max-w-sm font-medium">
+                        Diseñamos, implementamos y operamos conserjería remota y monitoreo de alta tecnología desde nuestra central de seguridad SOC Concepción.
+                    </p>
+                </div>
+
+                <!-- Navigation grid -->
+                <div class="md:col-span-4 grid grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <p class="text-[11px] font-bold text-white uppercase tracking-wider font-tech">MAPA DEL SITIO</p>
+                        <ul class="space-y-2 text-slate-300 font-medium">
+                            <li><button onclick="navigateTo('inicio')" class="hover:text-turquoise">Inicio</button></li>
+                            <li><button onclick="navigateTo('servicios')" class="hover:text-turquoise">Servicios</button></li>
+                            <li><button onclick="navigateTo('tecnologia')" class="hover:text-turquoise">Infraestructura</button></li>
+                            <li><button onclick="navigateTo('nosotros')" class="hover:text-turquoise">Nosotros</button></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-[11px] font-bold text-white uppercase tracking-wider font-tech">LEGAL & CERT</p>
+                        <ul class="space-y-2 text-slate-300 font-medium">
+                            <li>OS10 Carabineros</li>
+                            <li>Ley 21.659</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fast Contact -->
+                <div class="md:col-span-3 space-y-3">
+                    <p class="text-[11px] font-bold text-white uppercase tracking-wider font-tech">SOPORTE COMERCIAL</p>
+                    <p class="text-slate-400 font-medium">Lunes a Viernes de 9:00 a 18:00 hrs</p>
+                    <p class="font-bold text-celeste font-mono text-base">+56 9 5171 5595</p>
+                    <p class="text-turquoise font-mono text-base">gkraemer@kraibe.cl</p>
+                </div>
+
+            </div>
+
+            <!-- Footer Bottom legal statement -->
+            <div class="border-t border-navy-muted/30 pt-8 flex flex-col sm:flex-row items-center justify-between text-slate-400 text-[11px] font-medium">
+                <p>&copy; 2026 Kraibe Soluciones. Todos los derechos reservados.</p>
+                <div class="flex gap-4 mt-4 sm:mt-0 font-bold">
+                    <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="h-4 w-4 text-turquoise"></i> OS10 Chile Certificado</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            lucide.createIcons();
+            updateCalculatorValues();
+            window.scrollTo(0, 0);
+        };
+
+        // Navigation Controller - Synergizing both desktop header and mobile bottom app-bar active states
+        function navigateTo(targetViewId) {
+            const sections = document.querySelectorAll('.view-section');
+            sections.forEach(sec => {
+                sec.classList.add('hidden');
+            });
+            
+            const targetSection = document.getElementById('view-' + targetViewId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+            
+            // Sync Desktop Header Navigation Items
+            const navItems = ['inicio', 'servicios', 'tecnologia', 'nosotros'];
+            navItems.forEach(item => {
+                const btn = document.getElementById('nav-' + item);
+                if (btn) {
+                    if (item === targetViewId) {
+                        btn.classList.add('active-nav-link');
+                    } else {
+                        btn.classList.remove('active-nav-link');
+                    }
+                }
+            });
+
+            // Sync Mobile App Bottom Tab Bar Navigation Items
+            const mobileTabs = ['inicio', 'servicios', 'tecnologia', 'nosotros', 'contacto'];
+            mobileTabs.forEach(tab => {
+                const tabBtn = document.getElementById('tab-' + tab);
+                if (tabBtn) {
+                    if (tab === targetViewId) {
+                        tabBtn.classList.add('active-tab-link-mobile');
+                    } else {
+                        tabBtn.classList.remove('active-tab-link-mobile');
+                    }
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Interactive Savings Calculator Formulas Logic
+        function updateCalculatorValues() {
+            const guardiasInput = document.getElementById('input-guardias');
+            const costoInput = document.getElementById('input-costo');
+            
+            const guardiasCount = parseInt(guardiasInput.value);
+            const costoMensualGuardia = parseInt(costoInput.value);
+            
+            // Update Labels
+            document.getElementById('label-guardias').innerText = guardiasCount + (guardiasCount === 1 ? ' Operador' : ' Operadores');
+            document.getElementById('label-costo').innerText = '$' + costoMensualGuardia.toLocaleString('es-CL');
+            
+            // Calculations
+            const costoFisicoMesTotal = guardiasCount * costoMensualGuardia;
+            const costoFisicoAnoTotal = costoFisicoMesTotal * 12;
+            
+            // Kraibe Remote pricing structures optimized
+            let costoKraibeMes = 1350000; 
+            if (guardiasCount > 4) {
+                costoKraibeMes += (guardiasCount - 4) * 180000;
+            } else if (guardiasCount <= 2) {
+                costoKraibeMes = 980000;
+            }
+            
+            const savingsMes = costoFisicoMesTotal - costoKraibeMes;
+            const savingsAno = savingsMes * 12;
+            
+            // Update UI elements
+            document.getElementById('total-fisico-mes').innerText = '$' + costoFisicoMesTotal.toLocaleString('es-CL');
+            document.getElementById('total-fisico-ano').innerText = '$' + costoFisicoAnoTotal.toLocaleString('es-CL');
+            document.getElementById('total-kraibe-mes').innerText = '$' + costoKraibeMes.toLocaleString('es-CL');
+            
+            if (savingsMes > 0) {
+                document.getElementById('ahorro-mensual').innerText = '$' + savingsMes.toLocaleString('es-CL');
+                document.getElementById('ahorro-anual').innerText = '$' + savingsAno.toLocaleString('es-CL');
+            } else {
+                document.getElementById('ahorro-mensual').innerText = 'Servicio Óptimo';
+                document.getElementById('ahorro-anual').innerText = 'Contáctanos para evaluar';
+            }
+        }
+
+        let isSimulating = false;
+        function startSimulation() {
+            if (isSimulating) return;
+            isSimulating = true;
+
+            const msgEl = document.getElementById('sim-message');
+            const statusEl = document.getElementById('sim-status');
+            const timeEl = document.getElementById('sim-time');
+            const countdownEl = document.getElementById('sim-countdown');
+
+            // Phase 1: Alarm triggers
+            statusEl.innerText = "NIVEL: ALERTA CRÍTICA";
+            statusEl.className = "bg-red-500/20 text-red-500 border border-red-500/30 text-[10px] px-2.5 py-1 rounded font-mono animate-pulse";
+            msgEl.innerText = "¡ALERTA PERIMETRAL DETECTADA!";
+            msgEl.className = "text-xs sm:text-base font-extrabold text-red-500 tracking-wide uppercase animate-pulse";
+            timeEl.innerText = "Filtro IA: Humano detectado en zona restringida";
+            showToast("ALERTA EMITIDA", "Cruce de línea digital detectado en condominio de prueba.", "alert-triangle");
+
+            // Tick seconds counter
+            let start = Date.now();
+            let timer = setInterval(() => {
+                let diff = Date.now() - start;
+                let ms = String(diff % 1000).padStart(3, '0').slice(0, 2);
+                let sec = String(Math.floor(diff / 1000) % 60).padStart(2, '0');
+                countdownEl.innerText = `00:${sec}:${ms}`;
+            }, 30);
+
+            // Phase 2: Operator action (1.8s later)
+            setTimeout(() => {
+                statusEl.innerText = "SOC: INTERVINIENDO";
+                statusEl.className = "bg-celeste/20 text-celeste border border-celeste/30 text-[10px] px-2.5 py-1 rounded font-mono";
+                msgEl.innerText = "OPERADOR EMITIENDO AUDIO";
+                msgEl.className = "text-xs sm:text-base font-extrabold text-celeste tracking-wide uppercase";
+                timeEl.innerText = "Iniciando perifoneo de advertencia: '¡Retírese del sector!'";
+                showToast("DISUASIÓN EN VIVO", "Operador de Kraibe SOC habla en directo mediante parlantes.", "volume-2");
+            }, 1800);
+
+            // Phase 3: Patrulla despachada y fin (4.5s later)
+            setTimeout(() => {
+                clearInterval(timer);
+                statusEl.innerText = "SITUACIÓN RESUELTA";
+                statusEl.className = "bg-turquoise/20 text-turquoise border border-turquoise/30 text-[10px] px-2.5 py-1 rounded font-mono";
+                msgEl.innerText = "INTRUSO SE RETIRA — COMPLETADO";
+                msgEl.className = "text-xs sm:text-base font-extrabold text-turquoise tracking-wide uppercase";
+                timeEl.innerText = "Patrullero alertado. Carabineros notificados en 32 segundos.";
+                showToast("CASO CERRADO", "Intrusión neutralizada con éxito. Registro de video resguardado en Azure.", "check-circle");
+                isSimulating = false;
+            }, 4500);
+        }
+
+        // Global Toast Notification System
+        function showToast(title, description, iconName = 'info') {
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toast-title');
+            const toastDesc = document.getElementById('toast-desc');
+            const toastIcon = document.getElementById('toast-icon');
+            
+            toastTitle.innerText = title;
+            toastDesc.innerText = description;
+            toastIcon.innerHTML = `<i data-lucide="${iconName}" class="h-7 w-7"></i>`;
+            
+            lucide.createIcons(); 
+            
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-32', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 4000);
+        }
+
+        // Contact Submission Handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('form-name').value;
+            const city = document.getElementById('form-city').value;
+            
+            showToast('¡SOLICITUD ENVIADA!', `Muchas gracias ${name}. Hemos agendado un estudio técnico inicial para ${city}.`, 'send');
+            document.getElementById('quote-form').reset();
+        }
+    </script>
+</body>
+</html>
